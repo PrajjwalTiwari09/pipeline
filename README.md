@@ -146,7 +146,7 @@ bob,250,15-Mar-24          ← mixed date format
 
 | Name | Role |
 |---|---|
-| Bhargav | Full-stack & AI Integration |
+|Learner09 | Full-stack & AI Integration |
 
 ---
 
