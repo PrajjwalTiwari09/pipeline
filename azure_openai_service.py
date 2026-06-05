@@ -8,8 +8,6 @@ import os
 from openai import AzureOpenAI
 from dotenv import load_dotenv
 load_dotenv()
-print("ENDPOINT:", os.getenv("AZURE_OPENAI_ENDPOINT"))
-print("KEY:", os.getenv("AZURE_OPENAI_KEY")[:10] if os.getenv("AZURE_OPENAI_KEY") else "NOT FOUND")
 
 def _get_client() -> AzureOpenAI:
     endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
