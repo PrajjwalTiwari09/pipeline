@@ -1,0 +1,16 @@
+# Core
+streamlit>=1.35.0
+pandas>=2.0.0
+numpy>=1.26.0
+plotly>=5.18.0
+ 
+# Azure OpenAI
+openai>=1.30.0
+ 
+# Environment
+python-dotenv>=1.0.0
+ 
+# File format support
+pyarrow>=14.0.0       # Parquet + Delta parquet part-files
+openpyxl>=3.1.0       # Excel .xlsx
+xlrd>=2.0.1           # Excel .xls (legacy)
