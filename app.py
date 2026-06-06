@@ -190,10 +190,13 @@ st.markdown("""
 }
 .metric-value {
     font-family: var(--font-head);
-    font-size: 2.1rem;
+    font-size: clamp(1.1rem, 1.8vw, 2.1rem);
     font-weight: 800;
     color: #fff;
     line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .metric-value.accent { color: var(--accent); }
 .metric-value.red    { color: var(--red); }
@@ -681,17 +684,13 @@ if uploaded_file is not None:
                     "Category":      i.category,
                     "Field":         i.field,
                     "Description":   i.description,
-                    "Affected Rows": f"{i.affected_rows:,}",
+                    "Affected Rows": i.affected_rows,
                 } for i in report.issues])
 
                 # Styled dataframe
                 def sev_style(val):
-                    styles = {
-                        "High":   "color:#ff4d6d;font-weight:700;background-color:rgba(255,77,109,0.12)",
-                        "Medium": "color:#fb923c;font-weight:700;background-color:rgba(251,146,60,0.12)",
-                        "Low":    "color:#22d3a0;font-weight:700;background-color:rgba(34,211,160,0.12)",
-                    }
-                    return styles.get(val, "")
+                    c = {"High": "#ff4d6d", "Medium": "#fb923c", "Low": "#22d3a0"}
+                    return f"color:{c.get(val,'#fff')};font-weight:600"
 
                 st.dataframe(
                     issue_df.style.map(sev_style, subset=["Severity"]),
@@ -720,11 +719,12 @@ if uploaded_file is not None:
                     font=dict(family="DM Mono", color="#94a3b8", size=11),
                     title_font=dict(family="Syne", color="#e2e8f0", size=13),
                     legend=dict(
-                        orientation="h", yanchor="bottom", y=1.02,
+                        orientation="h", yanchor="top", y=-0.2,
+                        xanchor="center", x=0.5,
                         font=dict(size=10), bgcolor="rgba(0,0,0,0)",
                         bordercolor="rgba(0,0,0,0)"
                     ),
-                    margin=dict(l=0, r=0, t=50, b=0),
+                    margin=dict(l=0, r=0, t=40, b=60),
                     xaxis=dict(gridcolor="#1e2540", zerolinecolor="#1e2540"),
                     yaxis=dict(gridcolor="rgba(0,0,0,0)"),
                 )
