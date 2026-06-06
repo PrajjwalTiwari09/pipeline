@@ -429,22 +429,7 @@ h1, h2, h3 { font-family: var(--font-head) !important; }
 # ──────────────────────────────────────────────
 
 def read_csv_with_fallback(file) -> pd.DataFrame:
-    # Read raw bytes for chardet auto-detection
-    raw = file.read()
-    file.seek(0)
-
-    # Try chardet first — best for Hindi/Devanagari and non-Latin scripts
-    try:
-        import chardet
-        detected = chardet.detect(raw)
-        enc = detected.get("encoding") or "utf-8"
-        file.seek(0)
-        return pd.read_csv(file, encoding=enc)
-    except Exception:
-        file.seek(0)
-
-    # Manual fallback list — utf-8-sig handles Excel BOM files
-    for enc in ["utf-8-sig", "utf-8", "cp1252", "latin1", "ISO-8859-1", "windows-1252"]:
+    for enc in ["utf-8", "latin1", "cp1252", "ISO-8859-1"]:
         try:
             file.seek(0)
             return pd.read_csv(file, encoding=enc)
@@ -1026,7 +1011,7 @@ if uploaded_file is not None:
                             except Exception:
                                 pass
 
-                        q_csv = result_df.to_csv(index=False).encode("utf-8")
+                        q_csv = result_df.to_csv(index=False).encode("utf-8-sig")  # BOM ensures Hindi/non-Latin text opens correctly in Excel
                         st.download_button(
                             "⬇️  Download query result",
                             data=q_csv,
@@ -1081,7 +1066,7 @@ if uploaded_file is not None:
 
         # ── Download ─────────────────────────────────────
         section("Export", "⬇️")
-        csv_bytes = cleaned_df.to_csv(index=False).encode("utf-8")
+        csv_bytes = cleaned_df.to_csv(index=False).encode("utf-8-sig")  # BOM ensures Hindi/non-Latin text opens correctly in Excel
         st.download_button(
             label="⬇️  Download Cleaned CSV",
             data=csv_bytes,
