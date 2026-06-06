@@ -681,7 +681,7 @@ if uploaded_file is not None:
                     "Category":      i.category,
                     "Field":         i.field,
                     "Description":   i.description,
-                    "Affected Rows": i.affected_rows,
+                    "Affected Rows": f"{i.affected_rows:,}",
                 } for i in report.issues])
 
                 # Styled dataframe
@@ -837,7 +837,7 @@ if uploaded_file is not None:
         issue_str = pd.DataFrame([{
             "Severity": i.severity, "Category": i.category,
             "Field": i.field, "Description": i.description,
-            "Affected Rows": i.affected_rows,
+            "Affected Rows": f"{i.affected_rows:,}",
         } for i in report.issues]).to_string() if report.issues else "No issues detected."
 
         with st.spinner("💡  Generating insights via Azure OpenAI GPT-4o…"):
