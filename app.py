@@ -690,7 +690,7 @@ if uploaded_file is not None:
                     return f"color:{c.get(val,'#fff')};font-weight:600"
 
                 st.dataframe(
-                    issue_df.style.applymap(sev_style, subset=["Severity"]),
+                    issue_df.style.map(sev_style, subset=["Severity"]),
                     use_container_width=True,
                     hide_index=True,
                     height=min(300, 45 + len(issue_df) * 35),
