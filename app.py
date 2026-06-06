@@ -163,10 +163,10 @@ st.markdown("""
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 1.4rem 1.2rem;
+    padding: 1.2rem 0.8rem;
     text-align: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: border-color 0.2s;
 }
 .metric-card:hover { border-color: rgba(0,229,255,0.3); }
@@ -189,14 +189,13 @@ st.markdown("""
     margin-bottom: 0.5rem;
 }
 .metric-value {
-    font-family: var(--font-head);
-    font-size: clamp(1.1rem, 1.8vw, 2.1rem);
-    font-weight: 800;
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 500;
     color: #fff;
-    line-height: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    word-break: break-all;
 }
 .metric-value.accent { color: var(--accent); }
 .metric-value.red    { color: var(--red); }
