@@ -686,8 +686,12 @@ if uploaded_file is not None:
 
                 # Styled dataframe
                 def sev_style(val):
-                    c = {"High": "#ff4d6d", "Medium": "#fb923c", "Low": "#22d3a0"}
-                    return f"color:{c.get(val,'#fff')};font-weight:600"
+                    styles = {
+                        "High":   "color:#ff4d6d;font-weight:700;background-color:rgba(255,77,109,0.12)",
+                        "Medium": "color:#fb923c;font-weight:700;background-color:rgba(251,146,60,0.12)",
+                        "Low":    "color:#22d3a0;font-weight:700;background-color:rgba(34,211,160,0.12)",
+                    }
+                    return styles.get(val, "")
 
                 st.dataframe(
                     issue_df.style.map(sev_style, subset=["Severity"]),
