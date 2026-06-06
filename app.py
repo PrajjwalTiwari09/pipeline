@@ -163,10 +163,10 @@ st.markdown("""
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 1.2rem 0.8rem;
+    padding: 1.4rem 1.2rem;
     text-align: center;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     transition: border-color 0.2s;
 }
 .metric-card:hover { border-color: rgba(0,229,255,0.3); }
@@ -189,13 +189,11 @@ st.markdown("""
     margin-bottom: 0.5rem;
 }
 .metric-value {
-    font-family: var(--font-mono);
-    font-size: 1.35rem;
-    font-weight: 500;
+    font-family: var(--font-head);
+    font-size: 2.1rem;
+    font-weight: 800;
     color: #fff;
-    line-height: 1.3;
-    letter-spacing: 0.02em;
-    word-break: break-all;
+    line-height: 1;
 }
 .metric-value.accent { color: var(--accent); }
 .metric-value.red    { color: var(--red); }
@@ -431,7 +429,22 @@ h1, h2, h3 { font-family: var(--font-head) !important; }
 # ──────────────────────────────────────────────
 
 def read_csv_with_fallback(file) -> pd.DataFrame:
-    for enc in ["utf-8", "latin1", "cp1252", "ISO-8859-1"]:
+    # Read raw bytes for chardet auto-detection
+    raw = file.read()
+    file.seek(0)
+
+    # Try chardet first — best for Hindi/Devanagari and non-Latin scripts
+    try:
+        import chardet
+        detected = chardet.detect(raw)
+        enc = detected.get("encoding") or "utf-8"
+        file.seek(0)
+        return pd.read_csv(file, encoding=enc)
+    except Exception:
+        file.seek(0)
+
+    # Manual fallback list — utf-8-sig handles Excel BOM files
+    for enc in ["utf-8-sig", "utf-8", "cp1252", "latin1", "ISO-8859-1", "windows-1252"]:
         try:
             file.seek(0)
             return pd.read_csv(file, encoding=enc)
@@ -718,12 +731,11 @@ if uploaded_file is not None:
                     font=dict(family="DM Mono", color="#94a3b8", size=11),
                     title_font=dict(family="Syne", color="#e2e8f0", size=13),
                     legend=dict(
-                        orientation="h", yanchor="top", y=-0.2,
-                        xanchor="center", x=0.5,
+                        orientation="h", yanchor="bottom", y=1.02,
                         font=dict(size=10), bgcolor="rgba(0,0,0,0)",
                         bordercolor="rgba(0,0,0,0)"
                     ),
-                    margin=dict(l=0, r=0, t=40, b=60),
+                    margin=dict(l=0, r=0, t=50, b=0),
                     xaxis=dict(gridcolor="#1e2540", zerolinecolor="#1e2540"),
                     yaxis=dict(gridcolor="rgba(0,0,0,0)"),
                 )

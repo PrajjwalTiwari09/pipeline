@@ -14,3 +14,4 @@ python-dotenv>=1.0.0
 pyarrow>=14.0.0       # Parquet + Delta parquet part-files
 openpyxl>=3.1.0       # Excel .xlsx
 xlrd>=2.0.1           # Excel .xls (legacy)
+chardet>=5.0.0         # Auto-detect file encoding (Hindi, Arabic, CJK, etc.)
