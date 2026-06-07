@@ -189,11 +189,13 @@ st.markdown("""
     margin-bottom: 0.5rem;
 }
 .metric-value {
-    font-family: var(--font-head);
-    font-size: 2.1rem;
-    font-weight: 800;
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 500;
     color: #fff;
-    line-height: 1;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    word-break: break-all;
 }
 .metric-value.accent { color: var(--accent); }
 .metric-value.red    { color: var(--red); }
@@ -681,7 +683,7 @@ if uploaded_file is not None:
                     "Category":      i.category,
                     "Field":         i.field,
                     "Description":   i.description,
-                    "Affected Rows": f"{i.affected_rows:,}",
+                    "Affected Rows": i.affected_rows,
                 } for i in report.issues])
 
                 # Styled dataframe
@@ -716,11 +718,15 @@ if uploaded_file is not None:
                     font=dict(family="DM Mono", color="#94a3b8", size=11),
                     title_font=dict(family="Syne", color="#e2e8f0", size=13),
                     legend=dict(
-                        orientation="h", yanchor="bottom", y=1.02,
-                        font=dict(size=10), bgcolor="rgba(0,0,0,0)",
+                        orientation="h",
+                        yanchor="top", y=-0.25,
+                        xanchor="center", x=0.5,
+                        title=dict(text=""),
+                        font=dict(size=11),
+                        bgcolor="rgba(0,0,0,0)",
                         bordercolor="rgba(0,0,0,0)"
                     ),
-                    margin=dict(l=0, r=0, t=50, b=0),
+                    margin=dict(l=0, r=0, t=35, b=70),
                     xaxis=dict(gridcolor="#1e2540", zerolinecolor="#1e2540"),
                     yaxis=dict(gridcolor="rgba(0,0,0,0)"),
                 )
@@ -837,7 +843,7 @@ if uploaded_file is not None:
         issue_str = pd.DataFrame([{
             "Severity": i.severity, "Category": i.category,
             "Field": i.field, "Description": i.description,
-            "Affected Rows": f"{i.affected_rows:,}",
+            "Affected Rows": i.affected_rows,
         } for i in report.issues]).to_string() if report.issues else "No issues detected."
 
         with st.spinner("💡  Generating insights via Azure OpenAI GPT-4o…"):
@@ -1011,7 +1017,7 @@ if uploaded_file is not None:
                             except Exception:
                                 pass
 
-                        q_csv = result_df.to_csv(index=False).encode("utf-8-sig")  # BOM ensures Hindi/non-Latin text opens correctly in Excel
+                        q_csv = result_df.to_csv(index=False).encode("utf-8")
                         st.download_button(
                             "⬇️  Download query result",
                             data=q_csv,
@@ -1066,7 +1072,7 @@ if uploaded_file is not None:
 
         # ── Download ─────────────────────────────────────
         section("Export", "⬇️")
-        csv_bytes = cleaned_df.to_csv(index=False).encode("utf-8-sig")  # BOM ensures Hindi/non-Latin text opens correctly in Excel
+        csv_bytes = cleaned_df.to_csv(index=False).encode("utf-8")
         st.download_button(
             label="⬇️  Download Cleaned CSV",
             data=csv_bytes,
